@@ -1,1 +1,12 @@
-[]
+[
+  {
+    "id": "connector-cards",
+    "title": "이어 주는 말 카드 뒤집기",
+    "description": "그리고, 그래서, 그러나 중 알맞은 말을 골라 문장 카드와 단어 카드를 맞힙니다.",
+    "path": "games/connector-cards/index.html",
+    "subject": "국어",
+    "players": "1~2명",
+    "addedAt": "2026-10-16"
+  }
+]
+

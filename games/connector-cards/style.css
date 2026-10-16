@@ -1,0 +1,488 @@
+.game-connector-cards {
+  --accent: #0f766e;
+  --accent-dark: #115e59;
+  --accent-soft: #ccfbf1;
+  --ink: #134e4a;
+  --muted: #3f6f68;
+  --bg: #e7f7f2;
+  --left: #0f766e;
+  --left-deep: #115e59;
+  --right: #d97706;
+  --right-deep: #b45309;
+  background:
+    radial-gradient(circle at 0% 0%, rgba(153, 246, 228, 0.65), transparent 36%),
+    radial-gradient(circle at 100% 100%, rgba(254, 215, 170, 0.45), transparent 32%),
+    var(--bg);
+  color: var(--ink);
+}
+
+.game-connector-cards .app {
+  width: min(1680px, 100%);
+  margin: 0 auto;
+}
+
+.game-connector-cards .topbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.65rem 0.9rem;
+  margin-bottom: 0.75rem;
+}
+
+.game-connector-cards .topbar h1 {
+  flex: 1 1 14rem;
+  margin: 0;
+  font-size: clamp(1.35rem, 2.2vw, 2rem);
+  line-height: 1.25;
+}
+
+.game-connector-cards .stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.game-connector-cards .stat {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0;
+  min-height: 3.2rem;
+  padding: 0.25rem 0.9rem;
+  border: 3px solid #99f6e4;
+  border-radius: 16px;
+  background: #fff;
+  font-weight: 800;
+}
+
+.game-connector-cards .stat strong {
+  font-size: 1.35rem;
+  line-height: 1;
+}
+
+.game-connector-cards .board {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.game-connector-cards .deck,
+.game-connector-cards .stage {
+  min-width: 0;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.game-connector-cards .deck {
+  padding: 0.55rem;
+  border: 3px solid transparent;
+}
+
+.game-connector-cards .deck-sentences {
+  border-color: #5eead4;
+}
+
+.game-connector-cards .deck-words {
+  border-color: #fcd34d;
+}
+
+.game-connector-cards .deck-title {
+  margin: 0.15rem 0.35rem 0.45rem;
+  font-size: 1.05rem;
+  line-height: 1.2;
+}
+
+.game-connector-cards .grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.4rem;
+}
+
+.game-connector-cards .slot {
+  min-width: 0;
+  border-radius: 16px;
+}
+
+.game-connector-cards .slot.is-gone {
+  background: rgba(255, 255, 255, 0.35);
+  box-shadow: inset 0 0 0 2px rgba(15, 118, 110, 0.16);
+}
+
+.game-connector-cards .slot.is-gone .flip-card {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.game-connector-cards .flip-card {
+  display: block;
+  width: 100%;
+  height: auto;
+  min-height: 3.5rem;
+  aspect-ratio: 1.45 / 1;
+  padding: 0;
+  border: 0;
+  border-radius: 16px;
+  background: transparent;
+  cursor: pointer;
+  perspective: 800px;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.game-connector-cards .flip-card:disabled {
+  opacity: 1;
+  color: inherit;
+  cursor: default;
+}
+
+.game-connector-cards .flip-card:active:not(:disabled) {
+  opacity: 0.92;
+}
+
+.game-connector-cards .flip-inner {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.game-connector-cards .flip-card.is-open .flip-inner {
+  transform: rotateY(180deg);
+}
+
+.game-connector-cards .face {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 16px;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.game-connector-cards .face-down {
+  color: #fff;
+  font-weight: 900;
+}
+
+.game-connector-cards .face-down::after {
+  content: "";
+  position: absolute;
+  top: 0.35rem;
+  left: 0.35rem;
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.45);
+}
+
+.game-connector-cards .deck-sentences .face-down {
+  background-color: var(--left);
+  background-image: radial-gradient(rgba(255, 255, 255, 0.18) 1.1px, transparent 1.2px);
+  background-size: 9px 9px;
+  box-shadow: inset 0 0 0 3px var(--left-deep);
+}
+
+.game-connector-cards .deck-words .face-down {
+  background-color: var(--right);
+  background-image: repeating-linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.16) 0 2px,
+    transparent 2px 8px
+  );
+  box-shadow: inset 0 0 0 3px var(--right-deep);
+}
+
+.game-connector-cards .num,
+.game-connector-cards .up-kicker,
+.game-connector-cards .up-word {
+  font-size: clamp(1rem, 1.7vw, 1.45rem);
+  font-weight: 900;
+  line-height: 1.1;
+  text-align: center;
+}
+
+.game-connector-cards .deck-sentences .face-up {
+  background: #f0fdfa;
+  color: var(--left-deep);
+  box-shadow: inset 0 0 0 3px #5eead4;
+  transform: rotateY(180deg);
+}
+
+.game-connector-cards .deck-words .face-up {
+  background: #fff7ed;
+  color: #9a3412;
+  box-shadow: inset 0 0 0 3px #fdba74;
+  transform: rotateY(180deg);
+}
+
+.game-connector-cards .slot.is-open .flip-card {
+  outline: 3px solid #f59e0b;
+  outline-offset: 2px;
+}
+
+.game-connector-cards .slot.is-success .flip-card {
+  animation: connector-pop 0.45s ease;
+}
+
+.game-connector-cards .slot.is-fail .flip-card {
+  animation: connector-shake 0.4s ease;
+}
+
+.game-connector-cards .stage {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem 1rem 1.1rem;
+  border: 3px solid #99f6e4;
+}
+
+.game-connector-cards .placeholder,
+.game-connector-cards .sentence-box {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 8.5rem;
+}
+
+.game-connector-cards .placeholder {
+  margin: 0;
+  color: var(--muted);
+  font-size: clamp(1.3rem, 2vw, 1.8rem);
+  font-weight: 800;
+  line-height: 1.45;
+  text-align: center;
+}
+
+.game-connector-cards .line {
+  margin: 0;
+  font-size: clamp(1.45rem, 2.15vw, 2.15rem);
+  font-weight: 900;
+  line-height: 1.4;
+  text-align: center;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+.game-connector-cards .blank-row {
+  margin: 0.35rem 0;
+  text-align: center;
+}
+
+.game-connector-cards .blank-row span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 8.5rem;
+  min-height: 3.3rem;
+  padding: 0.15rem 1rem;
+  border: 3px dashed #5eead4;
+  border-radius: 16px;
+  background: #f8fffd;
+  color: var(--muted);
+  font-size: clamp(1.55rem, 2.5vw, 2.35rem);
+  font-weight: 900;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.game-connector-cards .blank-row span.is-picked {
+  border-style: solid;
+  border-color: var(--accent);
+  background: #ccfbf1;
+  color: var(--accent-dark);
+  box-shadow: 0 0 0 4px #fde68a;
+}
+
+.game-connector-cards .choices {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.65rem;
+}
+
+.game-connector-cards .choice {
+  min-height: 4.4rem;
+  padding: 0.4rem 0.6rem;
+  border: 3px solid var(--accent);
+  border-radius: 18px;
+  background: #f0fdfa;
+  color: var(--accent-dark);
+  font-size: clamp(1.35rem, 2vw, 1.7rem);
+  font-weight: 900;
+  line-height: 1.2;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.game-connector-cards .choice:active:not(:disabled) {
+  transform: translateY(2px);
+}
+
+.game-connector-cards .choice.is-selected {
+  background: var(--accent);
+  border-color: var(--accent-dark);
+  color: #fff;
+  box-shadow: 0 0 0 4px #fbbf24;
+}
+
+.game-connector-cards .choice:disabled {
+  opacity: 0.48;
+  cursor: default;
+}
+
+.game-connector-cards .choice.is-selected:disabled {
+  opacity: 1;
+}
+
+.game-connector-cards .rule {
+  margin: 0;
+  color: var(--muted);
+  font-size: 1.05rem;
+  font-weight: 800;
+  text-align: center;
+}
+
+.game-connector-cards .feedback {
+  min-height: 2.6rem;
+  margin: 0;
+  font-size: clamp(1.25rem, 2vw, 1.6rem);
+  font-weight: 900;
+  line-height: 1.3;
+  text-align: center;
+}
+
+.game-connector-cards .feedback.is-guide,
+.game-connector-cards .feedback.is-hint {
+  color: var(--accent-dark);
+}
+
+.game-connector-cards .feedback.is-success {
+  color: #15803d;
+  animation: connector-pop 0.35s ease;
+}
+
+.game-connector-cards .feedback.is-fail {
+  color: #b91c1c;
+  animation: connector-shake 0.4s ease;
+}
+
+.game-connector-cards .app[data-phase="judging"] .grid,
+.game-connector-cards .app[data-phase="judging"] .choices {
+  pointer-events: none;
+}
+
+.game-connector-cards .complete {
+  position: fixed;
+  z-index: 20;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 1.2rem;
+  background: rgba(19, 78, 74, 0.46);
+}
+
+.game-connector-cards .complete-card {
+  width: min(36rem, 100%);
+  padding: 1.8rem 1.3rem 1.5rem;
+  border: 4px solid var(--accent);
+  border-radius: 28px;
+  background: #fff;
+  text-align: center;
+  box-shadow: 0 18px 40px rgba(19, 78, 74, 0.18);
+  animation: connector-pop 0.35s ease;
+}
+
+.game-connector-cards .complete-kicker {
+  margin: 0;
+  color: var(--accent);
+  font-size: 1.25rem;
+  font-weight: 900;
+}
+
+.game-connector-cards .complete-card h2 {
+  margin: 0.35rem 0 0.6rem;
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  line-height: 1.25;
+}
+
+.game-connector-cards .complete-score {
+  margin: 0;
+  color: var(--accent-dark);
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 900;
+}
+
+.game-connector-cards .complete-tries {
+  margin: 0.45rem 0 1.1rem;
+  font-size: 1.3rem;
+  font-weight: 800;
+}
+
+.game-connector-cards .complete-tries strong {
+  font-size: 1.7rem;
+}
+
+@keyframes connector-pop {
+  0% { transform: scale(0.96); }
+  55% { transform: scale(1.04); }
+  100% { transform: scale(1); }
+}
+
+@keyframes connector-shake {
+  0%,
+  100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+@media (min-width: 720px) {
+  .game-connector-cards .choices {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 900px) {
+  .game-connector-cards .app {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - 7rem);
+  }
+
+  .game-connector-cards .board {
+    display: grid;
+    flex: 1;
+    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.45fr) minmax(0, 0.92fr);
+    align-items: stretch;
+  }
+
+  .game-connector-cards .deck {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .game-connector-cards .grid {
+    flex: 1;
+    grid-template-rows: repeat(7, minmax(2.8rem, 1fr));
+    gap: 0.35rem;
+  }
+
+  .game-connector-cards .flip-card {
+    height: 100%;
+    min-height: 2.8rem;
+    aspect-ratio: auto;
+  }
+
+  .game-connector-cards .line {
+    font-size: clamp(1.7rem, 2.15vw, 2.55rem);
+  }
+
+  .game-connector-cards .choice {
+    min-height: 4.8rem;
+  }
+}
