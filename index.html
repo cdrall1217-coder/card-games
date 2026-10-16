@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3ecdf">
+  <title>수업 카드 게임</title>
+  <link rel="stylesheet" href="common/style.css">
+  <style>
+    .home {
+      width: min(1120px, 100%);
+      margin: 0 auto;
+    }
+
+    .eyebrow {
+      margin: 0 0 0.35rem;
+      color: var(--accent);
+      font-weight: 800;
+    }
+
+    .home-header h1 {
+      margin: 0;
+      font-size: clamp(2.1rem, 5vw, 3.4rem);
+      line-height: 1.15;
+    }
+
+    .lede {
+      max-width: 40rem;
+      margin: 0.8rem 0 0;
+      color: var(--muted);
+      font-size: 1.15rem;
+    }
+
+    .toolbar {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.9rem;
+      margin-top: 1.6rem;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      font-size: 1.05rem;
+      font-weight: 800;
+    }
+
+    .field input,
+    .field select {
+      width: 100%;
+      min-height: 3.4rem;
+      padding: 0 1rem;
+      border: 3px solid var(--line);
+      border-radius: 16px;
+      background: var(--paper);
+    }
+
+    .count {
+      min-height: 1.5em;
+      margin: 1rem 0 0.7rem;
+      font-weight: 800;
+    }
+
+    .menu-grid {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+    }
+
+    .empty,
+    .error {
+      margin: 1rem 0 0;
+      font-size: 1.15rem;
+      font-weight: 800;
+    }
+
+    .error {
+      color: var(--danger);
+    }
+
+    @media (min-width: 800px) {
+      .toolbar {
+        grid-template-columns: 2fr 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="home">
+    <header class="home-header">
+      <p class="eyebrow">교실에서 바로 여는 카드 게임</p>
+      <h1>수업 카드 게임</h1>
+      <p class="lede">카드를 누르면 게임이 시작됩니다. 새 게임을 추가하면 이 목록에 자동으로 나타납니다.</p>
+    </header>
+
+    <div class="toolbar">
+      <label class="field">
+        <span>검색</span>
+        <input id="search" type="search" placeholder="게임 이름이나 설명" autocomplete="off">
+      </label>
+      <label class="field">
+        <span>과목</span>
+        <select id="subject">
+          <option value="all">전체</option>
+        </select>
+      </label>
+    </div>
+
+    <p id="count" class="count" aria-live="polite">게임 목록을 불러오는 중…</p>
+    <div id="grid" class="menu-grid"></div>
+    <p id="empty" class="empty" hidden>조건에 맞는 게임이 없습니다.</p>
+    <p id="error" class="error" hidden>게임 목록을 불러오지 못했습니다. 페이지를 새로고침해 주세요.</p>
+  </main>
+  <noscript>
+    <p class="error">이 메뉴는 자바스크립트가 필요합니다.</p>
+  </noscript>
+  <script>
+    (function () {
+      "use strict";
+
+      var searchEl = document.getElementById("search");
+      var subjectEl = document.getElementById("subject");
+      var gridEl = document.getElementById("grid");
+      var emptyEl = document.getElementById("empty");
+      var errorEl = document.getElementById("error");
+      var countEl = document.getElementById("count");
+      var games = [];
+      var palette = ["#145c4a", "#1d4e89", "#b4532a", "#6b3fa0", "#9a3b4a", "#2f6f4e", "#8a5a12", "#3d4f8a"];
+
+      function colorFor(title) {
+        var hash = 0;
+        var text = String(title || "");
+        for (var i = 0; i < text.length; i += 1) {
+          hash = (hash * 31 + text.charCodeAt(i)) >>> 0;
+        }
+        return palette[hash % palette.length];
+      }
+
+      function initial(title) {
+        var text = String(title || "").trim();
+        var chars = Array.from(text);
+        return chars[0] || "?";
+      }
+
+      function render(list) {
+        gridEl.replaceChildren();
+        var filtering = searchEl.value.trim() !== "" || subjectEl.value !== "all";
+        emptyEl.hidden = list.length !== 0;
+        emptyEl.textContent = games.length === 0
+          ? "등록된 게임이 없습니다."
+          : "조건에 맞는 게임이 없습니다.";
+        countEl.textContent = filtering
+          ? list.length + "개 표시"
+          : "전체 " + games.length + "개";
+
+        list.forEach(function (game) {
+          var link = document.createElement("a");
+          link.className = "info-card";
+          link.href = game.path;
+
+          var mark = document.createElement("span");
+          mark.className = "info-mark";
+          mark.textContent = initial(game.title);
+          mark.style.backgroundColor = colorFor(game.title);
+          mark.setAttribute("aria-hidden", "true");
+
+          var body = document.createElement("span");
+          body.className = "info-body";
+
+          var title = document.createElement("h2");
+          title.textContent = game.title;
+
+          var desc = document.createElement("p");
+          desc.textContent = game.description || "";
+
+          var meta = document.createElement("span");
+          meta.className = "info-meta";
+
+          var subject = document.createElement("span");
+          subject.className = "pill";
+          subject.textContent = game.subject || "공통";
+          meta.appendChild(subject);
+
+          if (game.players) {
+            var players = document.createElement("span");
+            players.className = "pill";
+            players.textContent = game.players;
+            meta.appendChild(players);
+          }
+
+          body.append(title, desc, meta);
+          link.append(mark, body);
+          gridEl.appendChild(link);
+        });
+      }
+
+      function applyFilter() {
+        var query = searchEl.value.trim().toLowerCase();
+        var subject = subjectEl.value;
+        var list = games.filter(function (game) {
+          var blob = [game.title, game.description, game.subject, game.players].join(" ").toLowerCase();
+          var matchText = !query || blob.indexOf(query) !== -1;
+          var matchSubject = subject === "all" || game.subject === subject;
+          return matchText && matchSubject;
+        });
+        render(list);
+      }
+
+      function fillSubjects() {
+        var seen = {};
+        games.forEach(function (game) {
+          if (!game.subject || seen[game.subject]) return;
+          seen[game.subject] = true;
+          var option = document.createElement("option");
+          option.value = game.subject;
+          option.textContent = game.subject;
+          subjectEl.appendChild(option);
+        });
+      }
+
+      fetch("games.json", { cache: "no-store" })
+        .then(function (res) {
+          if (!res.ok) throw new Error(String(res.status));
+          return res.json();
+        })
+        .then(function (data) {
+          if (!Array.isArray(data)) throw new Error("format");
+          games = data.filter(function (game) {
+            return game && game.title && game.path;
+          });
+          fillSubjects();
+          applyFilter();
+        })
+        .catch(function () {
+          errorEl.hidden = false;
+          countEl.textContent = "";
+        });
+
+      searchEl.addEventListener("input", applyFilter);
+      subjectEl.addEventListener("change", applyFilter);
+    })();
+  </script>
+</body>
+</html>

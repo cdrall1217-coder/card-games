@@ -1,0 +1,240 @@
+:root {
+  --bg: #f3ecdf;
+  --ink: #1c1915;
+  --muted: #4e483f;
+  --paper: #fffdf8;
+  --line: #ddd3c3;
+  --accent: #145c4a;
+  --accent-dark: #0e4336;
+  --accent-soft: #e4f3ee;
+  --warm: #c65a12;
+  --danger: #a33b32;
+  --shadow: 0 12px 28px rgba(28, 25, 21, 0.08);
+  --radius: 22px;
+  color-scheme: light;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: clamp(18px, 1.5vw, 22px);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Malgun Gothic", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  line-height: 1.5;
+  padding:
+    calc(1rem + env(safe-area-inset-top))
+    calc(1rem + env(safe-area-inset-right))
+    calc(1.25rem + env(safe-area-inset-bottom))
+    calc(1rem + env(safe-area-inset-left));
+}
+
+body.has-menu-back {
+  padding-top: calc(5.5rem + env(safe-area-inset-top));
+}
+
+button,
+input,
+select,
+a {
+  font: inherit;
+  color: inherit;
+  touch-action: manipulation;
+}
+
+:focus-visible {
+  outline: 4px solid var(--warm);
+  outline-offset: 3px;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+h1, h2, p {
+  overflow-wrap: anywhere;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  min-height: 3.4rem;
+  padding: 0.4rem 1.3rem;
+  border-radius: 16px;
+  border: 3px solid var(--ink);
+  background: var(--paper);
+  color: var(--ink);
+  font-weight: 800;
+  font-size: 1.15rem;
+  line-height: 1.2;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: var(--accent);
+  border-color: var(--accent-dark);
+  color: #fff;
+}
+
+.btn-ghost {
+  background: transparent;
+}
+
+.btn.is-selected {
+  background: var(--accent);
+  border-color: var(--accent-dark);
+  color: #fff;
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.menu-back {
+  position: fixed;
+  z-index: 30;
+  top: calc(0.8rem + env(safe-area-inset-top));
+  left: calc(0.8rem + env(safe-area-inset-left));
+  display: inline-flex;
+  align-items: center;
+  min-height: 3.4rem;
+  padding: 0.4rem 1.1rem;
+  border-radius: 16px;
+  border: 3px solid var(--ink);
+  background: var(--paper);
+  color: var(--ink);
+  font-weight: 800;
+  text-decoration: none;
+  box-shadow: var(--shadow);
+}
+
+.info-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  align-items: flex-start;
+  min-height: 12rem;
+  padding: 1.25rem;
+  border: 3px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--paper);
+  color: inherit;
+  text-decoration: none;
+  box-shadow: var(--shadow);
+}
+
+.info-card:hover {
+  border-color: var(--accent);
+}
+
+.info-mark {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 4.6rem;
+  height: 4.6rem;
+  border-radius: 18px;
+  color: #fff;
+  font-size: 2rem;
+  font-weight: 800;
+}
+
+.info-body {
+  min-width: 0;
+}
+
+.info-body h2 {
+  margin: 0;
+  font-size: 1.55rem;
+  line-height: 1.3;
+}
+
+.info-body p {
+  margin: 0.45rem 0 0;
+  color: var(--muted);
+  font-size: 1.05rem;
+}
+
+.info-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 0.8rem;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2rem;
+  padding: 0 0.75rem;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent-dark);
+  font-size: 0.95rem;
+  font-weight: 800;
+}
+
+.scoreboard {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.score-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 5.2rem;
+  min-height: 4.2rem;
+  padding: 0.35rem 0.8rem;
+  border: 3px solid var(--line);
+  border-radius: 16px;
+  background: var(--paper);
+}
+
+.score-item.is-active {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.score-name {
+  color: var(--muted);
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.score-value {
+  font-size: 1.7rem;
+  line-height: 1.1;
+}
+
+@media (hover: hover) {
+  .info-card {
+    transition: transform 0.15s ease, border-color 0.15s ease;
+  }
+
+  .info-card:hover {
+    transform: translateY(-3px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}
