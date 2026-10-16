@@ -9,15 +9,29 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body class="game-connector-cards">
-  <div id="app" class="app" data-phase="ready">
+  <div id="app" class="app" data-phase="setup">
     <header class="topbar">
       <h1>이어 주는 말 카드 뒤집기</h1>
+      <div id="player-scores" class="player-scores" hidden></div>
       <div class="stats">
         <p class="stat">맞힌 개수 <strong id="score-label">0/21</strong></p>
         <p class="stat">시도 횟수 <strong id="attempt-label">0</strong></p>
       </div>
       <button type="button" class="btn btn-primary" id="new-game">새 게임</button>
     </header>
+
+    <section id="setup" class="setup">
+      <div class="setup-card">
+        <h2 class="setup-title">이어 주는 말 카드 뒤집기</h2>
+        <p class="setup-lead">몇 명이 함께할까요?</p>
+        <div class="setup-choices" role="group" aria-label="인원 선택">
+          <button type="button" class="setup-choice" data-count="1">1인</button>
+          <button type="button" class="setup-choice" data-count="2">2인</button>
+          <button type="button" class="setup-choice" data-count="3">3인</button>
+          <button type="button" class="setup-choice" data-count="4">4인</button>
+        </div>
+      </div>
+    </section>
 
     <div class="board">
       <section class="deck deck-sentences">
@@ -26,19 +40,36 @@
       </section>
 
       <section class="stage" aria-label="문장과 이어 주는 말">
+        <p id="turn-label" class="turn-label" hidden></p>
         <p id="placeholder" class="placeholder">왼쪽 문장 카드를 뒤집으면<br>문장이 여기에 나타나요.</p>
         <div id="sentence-box" class="sentence-box" hidden>
           <p id="line-before" class="line"></p>
-          <p class="blank-row"><span id="blank">(       )</span></p>
+          <p class="blank-row"><span id="blank" aria-label="빈칸"></span></p>
           <p id="line-after" class="line"></p>
         </div>
         <div class="choices" role="group" aria-label="이어 주는 말 고르기">
-          <button type="button" class="choice" data-answer="그리고" disabled>그리고</button>
-          <button type="button" class="choice" data-answer="그래서" disabled>그래서</button>
-          <button type="button" class="choice" data-answer="그러나" disabled>그러나</button>
+          <button type="button" class="choice" data-answer="그리고" disabled>
+            <span class="choice-word">그리고</span>
+            <span class="choice-mark" aria-hidden="true"></span>
+          </button>
+          <button type="button" class="choice" data-answer="그래서" disabled>
+            <span class="choice-word">그래서</span>
+            <span class="choice-mark" aria-hidden="true"></span>
+          </button>
+          <button type="button" class="choice" data-answer="그러나" disabled>
+            <span class="choice-word">그러나</span>
+            <span class="choice-mark" aria-hidden="true"></span>
+          </button>
         </div>
         <p class="rule">고른 말과 뒤집은 카드가 모두 문장에 맞아야 해요.</p>
-        <p id="feedback" class="feedback" role="status" aria-live="polite">왼쪽에서 문장 카드 한 장을 뒤집어요.</p>
+        <p id="feedback" class="feedback" role="status" aria-live="polite">
+          <span id="feedback-text">왼쪽에서 문장 카드 한 장을 뒤집어요.</span>
+          <span id="verdict" class="verdict" hidden>
+            <span class="verdict-item">고른 말 <strong id="verdict-a" class="mark"></strong></span>
+            <span class="verdict-slash" aria-hidden="true">/</span>
+            <span class="verdict-item">뒤집은 카드 <strong id="verdict-b" class="mark"></strong></span>
+          </span>
+        </p>
       </section>
 
       <section class="deck deck-words">
@@ -50,10 +81,11 @@
 
   <div id="complete" class="complete" hidden>
     <div class="complete-card" role="dialog" aria-modal="true" aria-labelledby="complete-title">
-      <p class="complete-kicker">참 잘했어요!</p>
+      <p id="complete-kicker" class="complete-kicker">참 잘했어요!</p>
       <h2 id="complete-title">모든 문장을 맞혔어요</h2>
+      <div id="complete-ranks" class="complete-ranks" hidden></div>
       <p id="complete-score" class="complete-score">21/21개 성공</p>
-      <p class="complete-tries">총 시도 횟수 <strong id="complete-attempts">0</strong>회</p>
+      <p class="complete-tries">총 시도 횟수: <strong id="complete-attempts">0</strong>회</p>
       <button type="button" class="btn btn-primary" id="replay">다시 하기</button>
     </div>
   </div>
